@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logs.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/1.svg') }}" type="image/svg+xml">
+</head>
+<body>
+    <main class="contenido">
+        <div class="columna1" id="pseudonavbar">
+            <div class="menu_hamburguesa">
+                <button class="hidden_menu" id="H-menu">
+                    <img src="{{ url_for('static', filename='./vectores/open.svg') }}" class="menu_icon" id="menu_icon">
+                </button>
+            </div>
+        </div>
+        <div class="columna2">
+            <form action="" method="post">
+                <div class="titulo">
+                    <h1 class="titulo_registro">Iniciar <br> sesión</h1>
+                </div>
+
+                {% if mensaje %}
+                <h2 class="mensaje_bk">{{ mensaje }}</h2>
+                {% endif %}
+
+                <div class="campos">
+                    <h2>Nombre de usuario</h2>
+                    <input type="text" name="username">
+                    <h2>Contraseña</h2>
+                    <input type="password" id="password" name="password">
+                    <input type="submit" value="Iniciar sesión">
+                </div>
+            </form>
+        </div>
+        <div class="columna3">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='./vectores/white-logo.svg') }}" alt="">
+            </div>
+            <div class="information">
+                <p>¿No estás registrado? <a href="/sign_in">Crear una cuenta</a></p>
+            </div>
+        </div>
+    </main>
+    <div class="menu-oculto" id="hidden-HM-menu">
+        <div class="logo">
+            <button class="hidden-menu" id="H-menu-hidden">
+                <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="imagen-logo">
+            <img src="{{ url_for('static', filename='./vectores/name.svg') }}" class="menu-icon">
+        </div>
+        <ul class="menu-items">
+            <a href="/">
+                <li class="list-item">Inicio</li>
+            </a>
+            <a href="/login">
+                <li class="list-item">Iniciar sesión</li>
+            </a>
+            <a href="/sign_in">
+                <li class="list-item">Registrarme</li>
+            </a>
+            <a href="/contact">
+                <li class="list-item">Contacto</li>
+            </a>
+        </ul>
+        <div class="info">
+            <p>Desarrollado por: Carlos Adrián Espinosa Luna</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='javascript/hidden_menu.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% if menu == 1%}
+        <title>Mi perfil</title>
+    {% else %}
+        <title>Contacto</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/4.svg') }}" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <button class="hidden-menu" id="H-menu">
+                <img src="{{ url_for('static', filename='./vectores/open.svg') }}" class="menu-icon">
+            </button>
+        </div>
+
+        {% if datos_usuario %}
+        <div class="busqueda">
+            <form action="/dashboard" method="POST">
+                <div class="contenedor_busqueda">
+                    <input type="text" placeholder="¿Qué libro deseas encontrar?" name="nombre" id="nombre">
+                    <div class="icon-container">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="submit" class="submit_button" value="Buscar">
+                </div>
+                <div id="sugerencias" class="sugerencias"></div>
+            </form>
+        </div>
+        {% endif %}
+
+    </header>
+
+    <div class="menu-oculto" id="hidden-HM-menu">
+
+        {% if datos_usuario %}
+            <div class="logo">
+                <button class="hidden-menu" id="H-menu-hidden">
+                    <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+                </button>
+            </div>
+            <div class="imagen-logo">
+                <img src="{{ url_for('static', filename='./vectores/black-logo.svg') }}" class="menu-icon">
+            </div>
+            <ul class="menu-items">
+                <a href="/">
+                    <li class="list-item">Inicio</li>
+                </a>
+                <a href="/profile">
+                    <li class="list-item">Perfil e Historial</li>
+                </a>
+                <a href="/dashboard">
+                    <li class="list-item">Libros</li>
+                </a>
+                <a href="/close">
+                    <li class="list-item">Cerrar sesión</li>
+                </a>
+                <a href="/contact">
+                    <li class="list-item">Contacto</li>
+                </a>
+            </ul>
+            <p>Bienvenido(a) {{ datos_usuario[1] }}</p>
+        {% else %}
+            <div class="logo">
+                <button class="hidden-menu" id="H-menu-hidden">
+                    <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+                </button>
+            </div>
+            <div class="imagen-logo">
+                <img src="{{ url_for('static', filename='./vectores/name.svg') }}" class="menu-icon">
+            </div>
+            <ul class="menu-items">
+                <a href="/">
+                    <li class="list-item">Inicio</li>
+                </a>
+                <a href="/login">
+                    <li class="list-item">Iniciar sesión</li>
+                </a>
+                <a href="/sign_in">
+                    <li class="list-item">Registrarme</li>
+                </a>
+                <a href="/contact">
+                    <li class="list-item">Contacto</li>
+                </a>
+            </ul>
+            <div class="info">
+                <p>Desarrollado por: Carlos Adrián Espinosa Luna</p>
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% if menu == 1 %}
+        <main class="Menu_libro">
+            <div class="apartado_libro">
+                <div class="portada_libro">
+
+                    {% if datos_usuario[6] %}
+                        <a href="/profile_image"><img class="profile" src="{{ datos_usuario[6] }}" alt=""></a>
+                    {% else %}
+                        <a href="/profile_image"><img class="profile" src="https://cdn.pixabay.com/photo/2012/04/26/19/43/profile-42914_1280.png" alt=""></a>
+                    {% endif %}
+
+                </div>
+                <div class="informacion_libro">
+                    <h1 class="other-t">{{ datos_usuario[1] }}</h1>
+                    <h2>{{ datos_usuario[2] }} {{ datos_usuario[3] }}</h2>
+                    <h3 class="other">Usuario desde el: {{ datos_usuario[5] }}</h3>
+                    <div class="opciones_cuenta">
+                        <h3 class="other"><a href="/change_password">Cambiar contraseña</a></h3>
+                        <h3 class="other_delete"><a href="/delete_account">Eliminar mi cuenta</a></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="ratting">
+                <div class="comentarios-personas">
+                    <div class="comentario-persona">
+
+                        {% if reviews %}
+                            <h1>Historial de comentarios</h1>
+
+                            {% for review in reviews %}
+                                <div class="comentario-usuario">
+                                    <div class="nombre-star">
+                                        <a href="/dashboard/{{ review[2] }}"><h2>{{ review[4] }}</h2></a>
+                                        <h3> &#10022 {{ review[0] }}</h3>
+                                    </div>
+                                    <p>{{ review[1] }}</p>
+                                    <h4>Fecha: {{ review[3] }}</h4>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    {% else %}
+        <main class="Menu_libro">
+            <div class="apartado_libro">
+                <div class="portada_libro">
+                    <img class="profile" src="https://i.pinimg.com/originals/9d/fd/64/9dfd64655126fdf9bfac80cab8b3f1e8.jpg" alt="">
+                </div>
+                <div class="informacion_libro">
+                    <h2 class="other-social">Aplicación desarrollada por:</h2>
+                    <h1 class="other-t">DTCarlox77</h1>
+                    <h2>Carlos Adrián Espinosa Luna</h2>
+                    <h3 class="other">Web50x - Grupo K</h3>
+                    <h2>Mis redes sociales:</h2>
+                    <div class="social">
+                        <a href="https://github.com/DTCarlox77" target="_blank"><img src="{{ url_for('static', filename='icons/github.svg') }}" alt=""></a>
+                        <a href="https://discord.com/users/752018949994184727" target="_blank"><img src="{{ url_for('static', filename='icons/discord.svg') }}" alt=""></a>
+                        <a href="https://www.youtube.com/@DTCarlox77" target="_blank"><img src="{{ url_for('static', filename='icons/youtube.svg') }}" alt=""></a>
+                    </div>
+                </div>
+            </div>
+            <div class="ratting">
+                <div class="comentarios-personas">
+                    <div class="comentario-persona">
+                        <h1>Información adicional</h1>
+                        <div class="comentario-usuario">
+                            <p>Este proyecto ha sido desarrollado utilizando las tecnologías de Flask (Python), HTML, SASS, CSS, JavaScript y PostgreSQL (A través de la plataforma de Render.com). Para el control de versiones se han utilizado Git y Github. El proyecto se apoya de la API de Google Books para poder recopilar información de los libros que puede mostrar. Los diseños y funciones han sido en su totalidad creadas por Carlos Adrián Espinosa Luna con base a lo aprendido en el curso Web50x y fuentes externas. Algunos vectores fueron obtenidos de la aplicación Canva. Agradecimientos especiales para Cristel Gutiérrez (Maestra de Web50x).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    {% endif %}
+    
+    <script src="{{ url_for('static', filename='javascript/hidden_menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/suggestions.js') }}"></script>
+</body>
+</html>

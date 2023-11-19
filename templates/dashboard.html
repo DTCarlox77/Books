@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/3.svg') }}" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <button class="hidden-menu" id="H-menu">
+                <img src="{{ url_for('static', filename='./vectores/open.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="busqueda">
+            <form action="" method="POST">
+                <div class="contenedor_busqueda">
+                    <input type="text" placeholder="¿Qué libro deseas encontrar?" name="nombre" id="nombre">
+                    <div class="icon-container">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="submit" class="submit_button" value="Buscar">
+                </div>
+                <div id="sugerencias" class="sugerencias"></div>
+            </form>
+        </div>
+    </header>
+    <div class="menu-oculto" id="hidden-HM-menu">
+        <div class="logo">
+            <button class="hidden-menu" id="H-menu-hidden">
+                <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="imagen-logo">
+            <img src="{{ url_for('static', filename='./vectores/black-logo.svg') }}" class="menu-icon">
+        </div>
+        <ul class="menu-items">
+            <a href="/">
+                <li class="list-item">Inicio</li>
+            </a>
+            <a href="/profile">
+                <li class="list-item">Perfil e Historial</li>
+            </a>
+            <a href="/dashboard">
+                <li class="list-item">Libros</li>
+            </a>
+            <a href="/close">
+                <li class="list-item">Cerrar sesión</li>
+            </a>
+            <a href="/contact">
+                <li class="list-item">Contacto</li>
+            </a>
+        </ul>
+        <p>Bienvenido(a) {{ datos_usuario[1] }}</p>
+    </div>
+    <main>
+
+        {% if mensaje %}<h1 class="mensaje">{{ mensaje }}</h1>{% endif %}
+
+        <div class="libros">
+
+        {% if libros %}
+            {% for libro in libros %}
+                
+                <span class="libro">
+
+                    {% if libro['thumbnail'] %}
+                        <img src="{{ libro['thumbnail'] }}" alt="" class="portada">
+                    {% else %}
+                        <img src="https://dynamicmediainstitute.org/wp-content/themes/dynamic-media-institute-theme/imagery/default-thesis-abstract.png" alt="" class="portada">
+                    {% endif %}
+                    
+                    <a class="titulo" href="dashboard/{{ libro['isbn'] }}">
+                        <h1>{{ libro['title'] }}</h1>
+                    </a>
+                    
+                    {% for autor in libro['authors'] %}
+                        <h2 class="autor">{{ autor }}</h2>
+                    {% else %}
+                        <h2 class="autor">Autor no disponible</h2>
+                    {% endfor %}
+
+                </span>
+            {% endfor %}
+        {% endif %}
+        
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='javascript/hidden_menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/suggestions.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% if menu == 1%}
+        <title>Eliminar cuenta</title>
+    {% elif menu == 2 %}
+        <title>Imagen de perfil</title>
+    {% else %}
+        <title>Cambiar contraseña</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/1.svg') }}" type="image/svg+xml">
+
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <button class="hidden-menu" id="H-menu">
+                <img src="{{ url_for('static', filename='./vectores/open.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="busqueda">
+            <form action="/dashboard" method="POST">
+                <div class="contenedor_busqueda">
+                    <input type="text" placeholder="¿Qué libro deseas encontrar?" name="nombre" id="nombre">
+                    <div class="icon-container">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="submit" class="submit_button" value="Buscar">
+                </div>
+                <div id="sugerencias" class="sugerencias"></div>
+            </form>
+        </div>
+    </header>
+    <div class="menu-oculto" id="hidden-HM-menu">
+        <div class="logo">
+            <button class="hidden-menu" id="H-menu-hidden">
+                <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="imagen-logo">
+            <img src="{{ url_for('static', filename='./vectores/black-logo.svg') }}" class="menu-icon">
+        </div>
+        <ul class="menu-items">
+            <a href="/">
+                <li class="list-item">Inicio</li>
+            </a>
+            <a href="/profile">
+                <li class="list-item">Perfil e Historial</li>
+            </a>
+            <a href="/dashboard">
+                <li class="list-item">Libros</li>
+            </a>
+            <a href="/close">
+                <li class="list-item">Cerrar sesión</li>
+            </a>
+            <a href="/contact">
+                <li class="list-item">Contacto</li>
+            </a>
+        </ul>
+        <p>Bienvenido(a) {{ datos_usuario[1] }}</p>
+    </div>
+    <main class="Menu_libro">
+        <div class="apartado_libro">
+            <div class="change">
+
+                {% if mensaje %}
+                    <h2 class="mensaje_bk">{{ mensaje }}</h2>
+                {% endif %}
+
+                {% if menu == 3 %}
+                    <form action="/change_password" method="post">
+                        <h1 class="other-t">Cambiar contraseña</h1>
+                        <div class="campos">
+                            <input type="password" placeholder="Ingresa tu antigua contraseña" name="old_password">
+                            <input type="password" placeholder="Ingresa tu nueva contrseña" name="new_password">
+                            <input type="submit" value="Guardar cambios">
+                        </div>
+                    </form>
+                {% elif menu == 2%}
+                    <form action="/profile_image" method="post">
+                        <h1 class="other-t">Cambiar Imagen</h1>
+                        <div class="campos">
+                            <input type="text" placeholder="Ingresa la URL de tu nueva imagen" name="image">
+                            <input type="submit" value="Guardar cambios">
+                        </div>
+                    </form>
+                {% else %}
+                    <form action="/delete_account" method="post">
+                        <h1 class="other-t">Eliminar cuenta</h1>
+                        <div class="campos">
+                            <input type="password" placeholder="Ingresa tu contraseña" name="password">
+                            <input type="submit" value="Eliminar mi cuenta" class="delete">
+                        </div>
+                    </form>
+                {% endif %}
+                
+            </div>
+        </div>
+    </main>
+    
+    <script src="{{ url_for('static', filename='javascript/hidden_menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/suggestions.js') }}"></script>
+</body>
+</html>

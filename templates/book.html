@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% if libro['title'] %}
+        <title>{{ libro['title']}}</title>
+    {% else %}
+        <title>Sin título</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/4.svg') }}" type="image/svg+xml">
+
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <button class="hidden-menu" id="H-menu">
+                <img src="{{ url_for('static', filename='./vectores/open.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="busqueda">
+            <form action="/dashboard" method="POST">
+                <div class="contenedor_busqueda">
+                    <input type="text" placeholder="¿Qué libro deseas encontrar?" name="nombre" id="nombre">
+                    <div class="icon-container">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="submit" class="submit_button" value="Buscar">
+                </div>
+                <div id="sugerencias" class="sugerencias"></div>
+            </form>
+        </div>
+    </header>
+    <div class="menu-oculto" id="hidden-HM-menu">
+        <div class="logo">
+            <button class="hidden-menu" id="H-menu-hidden">
+                <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+            </button>
+        </div>
+        <div class="imagen-logo">
+            <img src="{{ url_for('static', filename='./vectores/black-logo.svg') }}" class="menu-icon">
+        </div>
+        <ul class="menu-items">
+            <a href="/">
+                <li class="list-item">Inicio</li>
+            </a>
+            <a href="/profile">
+                <li class="list-item">Perfil e Historial</li>
+            </a>
+            <a href="/dashboard">
+                <li class="list-item">Libros</li>
+            </a>
+            <a href="/close">
+                <li class="list-item">Cerrar sesión</li>
+            </a>
+            <a href="/contact">
+                <li class="list-item">Contacto</li>
+            </a>
+        </ul>
+        <p>Bienvenido(a) {{ datos_usuario[1] }}</p>
+    </div>
+    <main class="Menu_libro">
+        <div class="apartado_libro">
+            <div class="portada_libro">
+
+                {% if libro['imageLinks']['thumbnail'] %}
+                    <img src="{{ libro['imageLinks']['thumbnail'] }}" alt="">
+                {% else %}
+                    <img src="https://dynamicmediainstitute.org/wp-content/themes/dynamic-media-institute-theme/imagery/default-thesis-abstract.png" alt="">
+                {% endif %}
+
+            </div>
+            <div class="informacion_libro">
+
+                {% if libro['title'] %}
+                    <h1 class="other-t">{{ libro['title'] }}</h1>
+                {% else %}
+                    <h1 class="other-t">Sin Título</h1>
+                {% endif %}
+                
+                <h2>Autor(es):</h2>
+
+                {% for autor in libro['authors'] %}
+                    <h2>{{ autor }}</h2>
+                {% else %}
+                    <h2>Autor no disponible</h2>
+                {% endfor %}
+
+                <h3 class="other">Fecha de publicación: {{ libro['publishedDate'] }}</h3>
+                <h1>Descripción:</h1>
+
+                {% if libro['description'] %}
+                    <p>{{ libro['description'] }}​​</p>
+                {% else %}
+                    <p>El libro no posee descripción.</p>
+                {% endif %}
+
+                {% if libro['categories'] %}
+                    <h3 class="other">Categoría: {{ libro['categories'][0] }}</h3>
+                {% else %}
+                    <h3 class="other">Categoría: Sin especificar.</h3>
+                {% endif %}
+
+                {% if libro['averageRating'] %}
+                    <h3>Calificación de Play Books: {{ libro['averageRating'] }}</h3>
+                {% endif %}
+
+                <h3 class="other">ISBN: {{ isbn }}</h3>
+
+                {% if libro['infoLink'] %}
+                    <h3 class="other"><a href="{{ libro['infoLink'] }}">Mayor información</a></h3>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="ratting">
+            <div class="trating">
+                <h1>Calificaciones</h1>
+            </div>
+            <div class="reviews-comment">
+
+                {% if estadisticas and estrellas %}
+                    <div class="informacion_ratting">
+                        <div class="promedio">
+                            <h1>{{ estadisticas[1] }}</h1>
+                            <h2>Total de opiniones: {{ estadisticas[0] }}</h2>
+                        </div>
+                        <div class="bar-container">
+                            <!-- Este contenido viene del servidor y está oculto para pasar al Js. -->
+                            <h1 class="estrella-1 hidden-content-be">{{ estrellas[0] }}</h1>
+                            <h1 class="estrella-2 hidden-content-be">{{ estrellas[1] }}</h1>
+                            <h1 class="estrella-3 hidden-content-be">{{ estrellas[2] }}</h1>
+                            <h1 class="estrella-4 hidden-content-be">{{ estrellas[3] }}</h1>
+                            <h1 class="estrella-5 hidden-content-be">{{ estrellas[4] }}</h1>
+                        </div>
+                        <!-- Contenedor para los gráficos de barras -->
+                        <div class="graficos-de-barras"></div>
+                    </div>
+                {% else %}
+                    <div class="informacion_ratting">
+                        <div class="promedio">
+                            <h1>0.0</h1>
+                            <h2>¡Sé el primero en comentar!</h2>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="posting">
+                    <form action="/dashboard/{{ isbn }}" method="POST">
+                        <h1>¿Cuál es tu opinión?</h1>
+                        <div class="review-text">
+
+                            {% if user_review %}
+                                <textarea name="book_review" id="" cols="" rows="6">{{ user_review[1] }}</textarea>
+                            {% else %}
+                                <textarea name="book_review" id="" cols="" rows="6"></textarea>
+                            {% endif %}
+
+                        </div>
+                        <div class="actions">
+                            <div class="rating">
+                                <span class="star" data-rating="1">&#10022;</span>
+                                <span class="star" data-rating="2">&#10022;</span>
+                                <span class="star" data-rating="3">&#10022;</span>
+                                <span class="star" data-rating="4">&#10022;</span>
+                                <span class="star" data-rating="5">&#10022;</span>
+                            </div>
+                            <div class="result">
+
+                                {% if user_review %}
+                                    <input type="submit" value="Actualizar reseña" id="submit-button">
+                                    <a href="/delete/{{ isbn }}"><input type="button" value="Eliminar reseña"></a>
+                                {% else %}
+                                    <input type="submit" value="Enviar reseña" id="submit-button">
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <!-- Campos ocultos para almacenar la puntuación -->
+                        <input type="hidden" id="rating_input" name="rating" value="{{ user_review[0] }}">
+
+                        {% if user_review %}
+                            <span id="rating" class="hidden-score">{{ user_review[0] }}</span> 
+                        {% else %}
+                            <span id="rating" class="hidden-score">0</span>
+                        {% endif %}
+
+                        {% if mensaje %}
+                            <h1>{{ mensaje }}</h1>
+                        {% endif %}
+
+                    </form>
+                </div>
+            </div>
+            <div class="comentarios-personas">
+                <div class="comentario-persona">
+
+                    {% if opiniones %}
+                        <h1>Comentarios de usuarios</h1>
+                        {% for opinion in opiniones %}
+
+                            {% if opinion[2] != datos_usuario[1] %}
+                            <div class="comentario-usuario">
+                                <div class="nombre-star">
+                                    <h2>{{ opinion[2] }}</h2>
+                                    <h3> &#10022 {{ opinion[0] }}</h3>
+                                </div>
+                                <p>{{ opinion[1] }}</p>
+                                <h4>Fecha: {{ opinion[3] }}</h4>
+                            </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='javascript/hidden_menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/suggestions.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/rating_functions.js') }}"></script>
+</body>
+</html>

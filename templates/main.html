@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books App</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/3.svg') }}" type="image/svg+xml">
+</head>
+<body>
+    <body>
+        <header>
+            <div class="menu">
+                <button class="hidden-menu" id="H-menu">
+                    <img src="{{ url_for('static', filename='./vectores/open.svg') }}" class="menu-icon">
+                </button>
+            </div>
+    
+            {% if datos_usuario %}
+                <div class="busqueda">
+                    <form action="/dashboard" method="POST">
+                        <div class="contenedor_busqueda">
+                            <input type="text" placeholder="¿Qué libro deseas encontrar?" name="nombre" id="nombre">
+                            <div class="icon-container">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <input type="submit" class="submit_button" value="Buscar">
+                        </div>
+                        <div id="sugerencias" class="sugerencias"></div>
+                    </form>
+                </div>
+            {% endif %}
+    
+        </header>
+        <div class="menu-oculto" id="hidden-HM-menu">
+    
+            {% if datos_usuario %}
+                <div class="logo">
+                    <button class="hidden-menu" id="H-menu-hidden">
+                        <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+                    </button>
+                </div>
+                <div class="imagen-logo">
+                    <img src="{{ url_for('static', filename='./vectores/black-logo.svg') }}" class="menu-icon">
+                </div>
+                <ul class="menu-items">
+                    <a href="/">
+                        <li class="list-item">Inicio</li>
+                    </a>
+                    <a href="/profile">
+                        <li class="list-item">Perfil e Historial</li>
+                    </a>
+                    <a href="/dashboard">
+                        <li class="list-item">Libros</li>
+                    </a>
+                    <a href="/close">
+                        <li class="list-item">Cerrar sesión</li>
+                    </a>
+                    <a href="/contact">
+                        <li class="list-item">Contacto</li>
+                    </a>
+                </ul>
+                <p>Bienvenido(a) {{ datos_usuario[1] }}</p>
+            {% else %}
+                <div class="logo">
+                    <button class="hidden-menu" id="H-menu-hidden">
+                        <img src="{{ url_for('static', filename='./vectores/close.svg') }}" class="menu-icon">
+                    </button>
+                </div>
+                <div class="imagen-logo">
+                    <img src="{{ url_for('static', filename='./vectores/name.svg') }}" class="menu-icon">
+                </div>
+                <ul class="menu-items">
+                    <a href="/">
+                        <li class="list-item">Inicio</li>
+                    </a>
+                    <a href="/login">
+                        <li class="list-item">Iniciar sesión</li>
+                    </a>
+                    <a href="/sign_in">
+                        <li class="list-item">Registrarme</li>
+                    </a>
+                    <a href="/contact">
+                        <li class="list-item">Contacto</li>
+                    </a>
+                </ul>
+                <div class="info">
+                    <p>Desarrollado por: Carlos Adrián Espinosa Luna</p>
+                </div>
+            {% endif %}
+    
+        </div>
+    <main class="Menu_libro">
+        <div class="apartado_libro">
+            <div class="portada_libro">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Books_HD_%288314929977%29.jpg/800px-Books_HD_%288314929977%29.jpg" alt="">
+            </div>
+            <div class="informacion_libro">
+                <h1 class="other-t">Books App</h1>
+                <h2>Por: Carlos Adrián Espinosa Luna </h2>
+                <h3 class="other">Web50x Project 1</h3>
+                <h1>Descripción:</h1>
+                <p>Books App es una plataforma que te permite buscar libros, obtener detalles sobre ellos y dejar reseñas con calificaciones. Puedes buscar libros por título, autor o ISBN, y la aplicación te proporcionará información detallada sobre cada libro, incluyendo su portada, calificaciones promedio y reseñas de otros usuarios. Además, recibirás recomendaciones aleatorias de libros cuando te encuentres en la pestaña principal. Para comenzar a utilizar la aplicación, puedes registrarte como usuario y, una vez dentro, podrás dejar tus propias reseñas y explorar libros de tu interés.​​</p>
+                <h3 class="other"><a href="https://github.com/DTCarlox77/cs50w-project1">Mayor información</a></h3>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='javascript/hidden_menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/suggestions.js') }}"></script>
+</body>
+</html>
