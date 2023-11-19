@@ -396,6 +396,6 @@ def close():
 
 if __name__ == '__main__':
 
-    socketio = SocketIO(app, host='0.0.0.0', port=5000, secure=True)
+    socketio = SocketIO(app, host='0.0.0.0', port=3000, secure=True)
     
 # Proyecto Web Finalizado :)
